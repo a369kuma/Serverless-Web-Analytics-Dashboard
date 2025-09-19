@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Serverless Analytics Dashboard</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+        .header p {
+            margin: 10px 0 0 0;
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+        .content {
+            padding: 40px;
+        }
+        .api-section {
+            margin-bottom: 40px;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+        .api-section h2 {
+            margin-top: 0;
+            color: #333;
+        }
+        .endpoint {
+            background: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 6px;
+            border: 1px solid #e9ecef;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 14px;
+        }
+        .method {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .post { background: #28a745; color: white; }
+        .get { background: #007bff; color: white; }
+        .test-button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+            transition: background 0.3s;
+        }
+        .test-button:hover {
+            background: #5a6fd8;
+        }
+        .result {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 6px;
+            padding: 15px;
+            margin-top: 15px;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 12px;
+            white-space: pre-wrap;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .status {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 Serverless Analytics Dashboard</h1>
+            <p>Your analytics system is live and ready to use!</p>
+        </div>
+        
+        <div class="content">
+            <div class="api-section">
+                <h2>📊 API Endpoints</h2>
+                <p>Your backend is deployed and accessible at:</p>
+                <div class="endpoint">
+                    <strong>Base URL:</strong> https://ta2um19ls0.execute-api.us-east-1.amazonaws.com/dev
+                </div>
+                
+                <h3>Available Endpoints:</h3>
+                
+                <div class="endpoint">
+                    <span class="method post">POST</span> /api/sites - Register a new site
+                </div>
+                
+                <div class="endpoint">
+                    <span class="method get">GET</span> /api/sites - List all sites
+                </div>
+                
+                <div class="endpoint">
+                    <span class="method post">POST</span> /api/events - Collect analytics events
+                </div>
+                
+                <div class="endpoint">
+                    <span class="method get">GET</span> /api/analytics - Get analytics data
+                </div>
+                
+                <div class="endpoint">
+                    <span class="method get">GET</span> /api/analytics.js - Get tracking script
+                </div>
+            </div>
+
+            <div class="api-section">
+                <h2>🧪 Test Your API</h2>
+                <p>Click the buttons below to test your deployed endpoints:</p>
+                
+                <button class="test-button" onclick="testGetSites()">Get Sites</button>
+                <button class="test-button" onclick="testRegisterSite()">Register Site</button>
+                <button class="test-button" onclick="testCollectEvent()">Collect Event</button>
+                <button class="test-button" onclick="testAnalyticsScript()">Get Tracking Script</button>
+                
+                <div id="result" class="result" style="display: none;"></div>
+            </div>
+
+            <div class="api-section">
+                <h2>📈 How to Use</h2>
+                <ol>
+                    <li><strong>Register a Site:</strong> Use the POST /api/sites endpoint to register your website</li>
+                    <li><strong>Get Tracking Code:</strong> Use the GET /api/analytics.js endpoint to get the tracking script</li>
+                    <li><strong>Add to Your Website:</strong> Include the tracking script in your website's HTML</li>
+                    <li><strong>View Analytics:</strong> Use the GET /api/analytics endpoint to view collected data</li>
+                </ol>
+            </div>
+
+            <div class="api-section">
+                <h2>🎯 Next Steps</h2>
+                <ul>
+                    <li>✅ Backend deployed successfully</li>
+                    <li>✅ Frontend built successfully</li>
+                    <li>✅ API endpoints working</li>
+                    <li>🔄 Deploy frontend to a hosting service (Netlify, Vercel, etc.)</li>
+                    <li>🔄 Set up custom domain (optional)</li>
+                    <li>🔄 Configure monitoring and alerts</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'https://ta2um19ls0.execute-api.us-east-1.amazonaws.com/dev';
+        
+        function showResult(data, status = 'success') {
+            const resultDiv = document.getElementById('result');
+            resultDiv.style.display = 'block';
+            resultDiv.innerHTML = `<span class="status ${status}">${status.toUpperCase()}</span>\n\n${JSON.stringify(data, null, 2)}`;
+        }
+        
+        async function testGetSites() {
+            try {
+                const response = await fetch(`${API_BASE}/api/sites`);
+                const data = await response.json();
+                showResult(data, response.ok ? 'success' : 'error');
+            } catch (error) {
+                showResult({ error: error.message }, 'error');
+            }
+        }
+        
+        async function testRegisterSite() {
+            try {
+                const response = await fetch(`${API_BASE}/api/sites`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        name: 'Test Website',
+                        domain: 'example.com',
+                        description: 'Test site for analytics'
+                    })
+                });
+                const data = await response.json();
+                showResult(data, response.ok ? 'success' : 'error');
+            } catch (error) {
+                showResult({ error: error.message }, 'error');
+            }
+        }
+        
+        async function testCollectEvent() {
+            try {
+                const response = await fetch(`${API_BASE}/api/events`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        siteId: 'test-site-id',
+                        eventType: 'pageview',
+                        page: '/test',
+                        referrer: document.referrer,
+                        userAgent: navigator.userAgent,
+                        timestamp: new Date().toISOString()
+                    })
+                });
+                const data = await response.json();
+                showResult(data, response.ok ? 'success' : 'error');
+            } catch (error) {
+                showResult({ error: error.message }, 'error');
+            }
+        }
+        
+        async function testAnalyticsScript() {
+            try {
+                const response = await fetch(`${API_BASE}/api/analytics.js?siteId=test-site-id`);
+                const script = await response.text();
+                showResult({ script: script.substring(0, 500) + '...' }, response.ok ? 'success' : 'error');
+            } catch (error) {
+                showResult({ error: error.message }, 'error');
+            }
+        }
+    </script>
+</body>
+</html>
