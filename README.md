@@ -1,4 +1,4 @@
-# Serverless Web Analytics Dashboard
+# EchoDash
 
 A comprehensive, serverless web analytics solution built with AWS Lambda, DynamoDB, and React. This project demonstrates event-driven architecture, cost optimization, and Infrastructure as Code (IaC) for serverless applications.
 
