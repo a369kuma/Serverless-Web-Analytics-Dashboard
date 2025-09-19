@@ -1,0 +1,38 @@
+{
+  "name": "serverless-web-analytics-backend",
+  "version": "1.0.0",
+  "description": "Backend for serverless web analytics dashboard",
+  "main": "index.js",
+  "scripts": {
+    "deploy": "serverless deploy",
+    "deploy:dev": "serverless deploy --stage dev",
+    "deploy:prod": "serverless deploy --stage prod",
+    "remove": "serverless remove",
+    "logs": "serverless logs -f",
+    "invoke": "serverless invoke -f",
+    "info": "serverless info"
+  },
+  "keywords": [
+    "serverless",
+    "analytics",
+    "aws",
+    "lambda",
+    "dynamodb"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "devDependencies": {
+    "serverless": "^3.40.0",
+    "serverless-offline": "^13.3.0",
+    "serverless-webpack": "^5.15.3",
+    "webpack": "^5.88.0",
+    "webpack-node-externals": "^3.0.0",
+    "babel-loader": "^9.1.3",
+    "@babel/core": "^7.22.0",
+    "@babel/preset-env": "^7.22.0"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.1457.0",
+    "uuid": "^9.0.1"
+  }
+}

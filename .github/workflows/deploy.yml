@@ -1,0 +1,91 @@
+name: Deploy Serverless Analytics
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: |
+        npm install
+        cd frontend && npm install
+        
+    - name: Build frontend
+      run: |
+        cd frontend
+        npm run build
+        
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-east-1
+        
+    - name: Deploy to AWS
+      run: |
+        npm run deploy:prod
+      env:
+        NODE_ENV: production
+        
+    - name: Update frontend environment
+      run: |
+        # Get the API Gateway URL from the deployment output
+        API_URL=$(serverless info --stage prod | grep "endpoint:" | head -1 | cut -d' ' -f2)
+        echo "REACT_APP_API_BASE_URL=$API_URL" > frontend/.env.production
+        
+    - name: Deploy frontend to S3
+      run: |
+        # This would require additional setup for S3 deployment
+        # For now, we'll just build the frontend
+        echo "Frontend built successfully"
+        
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: |
+        npm install
+        cd frontend && npm install
+        
+    - name: Run backend tests
+      run: |
+        # Add your backend tests here
+        echo "Backend tests would run here"
+        
+    - name: Run frontend tests
+      run: |
+        cd frontend
+        npm test -- --coverage --watchAll=false
+        
+    - name: Upload coverage reports
+      uses: codecov/codecov-action@v3
+      with:
+        file: ./frontend/coverage/lcov.info
+        flags: frontend
+        name: frontend-coverage

@@ -1,0 +1,97 @@
+service: serverless-web-analytics
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  stage: ${opt:stage, 'dev'}
+  region: ${opt:region, 'us-east-1'}
+  memorySize: 256
+  timeout: 30
+  environment:
+    STAGE: ${self:provider.stage}
+    ANALYTICS_TABLE: ${self:service}-analytics-${self:provider.stage}
+    SITES_TABLE: ${self:service}-sites-${self:provider.stage}
+
+functions:
+  collectEvent:
+    handler: src/handlers/collectEvent.handler
+    events:
+      - http:
+          path: /api/events
+          method: post
+          cors: true
+    environment:
+      ANALYTICS_TABLE: ${self:service}-analytics-${self:provider.stage}
+
+  getAnalytics:
+    handler: src/handlers/getAnalytics.handler
+    events:
+      - http:
+          path: /api/analytics
+          method: get
+          cors: true
+    environment:
+      ANALYTICS_TABLE: ${self:service}-analytics-${self:provider.stage}
+
+  registerSite:
+    handler: src/handlers/registerSite.handler
+    events:
+      - http:
+          path: /api/sites
+          method: post
+          cors: true
+    environment:
+      SITES_TABLE: ${self:service}-sites-${self:provider.stage}
+
+  getSites:
+    handler: src/handlers/getSites.handler
+    events:
+      - http:
+          path: /api/sites
+          method: get
+          cors: true
+    environment:
+      SITES_TABLE: ${self:service}-sites-${self:provider.stage}
+
+  analyticsScript:
+    handler: src/handlers/analyticsScript.handler
+    events:
+      - http:
+          path: /api/analytics.js
+          method: get
+          cors: true
+
+resources:
+  Resources:
+    AnalyticsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:service}-analytics-${self:provider.stage}
+        BillingMode: PAY_PER_REQUEST
+        AttributeDefinitions:
+          - AttributeName: siteId
+            AttributeType: S
+          - AttributeName: timestamp
+            AttributeType: S
+        KeySchema:
+          - AttributeName: siteId
+            KeyType: HASH
+          - AttributeName: timestamp
+            KeyType: RANGE
+        TimeToLiveSpecification:
+          AttributeName: ttl
+          Enabled: true
+
+    SitesTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:service}-sites-${self:provider.stage}
+        BillingMode: PAY_PER_REQUEST
+        AttributeDefinitions:
+          - AttributeName: siteId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: siteId
+            KeyType: HASH
